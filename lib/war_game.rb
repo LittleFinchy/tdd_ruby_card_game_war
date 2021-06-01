@@ -1,11 +1,13 @@
 class WarGame
+  attr_accessor :player1, :player2
+
   def initialize
     deck = CardDeck.new()
-    @player1 = Player.new([])
-    @player2 = Player.new([])
+    @player1 = Player.new("Stephen", [])
+    @player2 = Player.new("Joe", [])
     until deck.cards_left == 0
-      @player1.hand.push(deck.deal)
-      @player1.hand.push(deck.deal)
+      @player1.take_cards([deck.deal])
+      @player2.take_cards([deck.deal])
     end
   end
 
