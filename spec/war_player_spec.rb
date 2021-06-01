@@ -1,8 +1,8 @@
 require_relative "../lib/war_player"
 
 describe "WarPlayer" do
-  let(:player1) { Player.new([PlayingCard.new("2", "D"), PlayingCard.new("3", "D")]) }
-  let(:player2) { Player.new([PlayingCard.new("5", "H"), PlayingCard.new("6", "H")]) }
+  let(:player1) { Player.new("Bill", [PlayingCard.new("2", "D"), PlayingCard.new("3", "D")]) }
+  let(:player2) { Player.new("Bob", [PlayingCard.new("5", "H"), PlayingCard.new("6", "H")]) }
 
   it "cards played come from the top of the player hand" do
     expect(player1.play_card).to eq PlayingCard.new("3", "D")

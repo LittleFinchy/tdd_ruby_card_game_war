@@ -2,6 +2,10 @@ class WarGame
   attr_accessor :player1, :player2
 
   def initialize
+    start
+  end
+
+  def start
     deck = CardDeck.new()
     @player1 = Player.new("Stephen", [])
     @player2 = Player.new("Joe", [])
@@ -11,11 +15,8 @@ class WarGame
     end
   end
 
-  # def start
-  # end
-
-  # def winner
-  # end
+  def winner
+  end
 
   # def play_round
   # end
