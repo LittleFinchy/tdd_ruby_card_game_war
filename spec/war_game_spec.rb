@@ -16,10 +16,12 @@ describe "WarGame" do
     end
     expect(game.winner).to eq game.player1.name
   end
+
+  it "plays a round" do
+    game.start
+    game.play_round
+    expect((game.player1.cards_left - game.player2.cards_left).abs).to eq 2
+    game.play_round
+    expect((game.player1.cards_left - game.player2.cards_left).abs).to eq 4 || 0
+  end
 end
-
-# def start
-# end
-
-# def play_round
-# end

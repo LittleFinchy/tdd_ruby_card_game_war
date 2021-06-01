@@ -1,10 +1,6 @@
 class WarGame
   attr_accessor :player1, :player2
 
-  # def initialize
-  #   start
-  # end
-
   def start
     deck = CardDeck.new()
     @player1 = Player.new("Stephen", [])
@@ -25,6 +21,17 @@ class WarGame
     end
   end
 
-  # def play_round
-  # end
+  def play_round
+    card1 = @player1.play_card
+    card2 = @player2.play_card
+    if card1.value != card2.value
+      if card1.value > card2.value
+        player1.take_cards([card1, card2])
+      else
+        player2.take_cards([card1, card2])
+      end
+    else
+      play_round
+    end
+  end
 end

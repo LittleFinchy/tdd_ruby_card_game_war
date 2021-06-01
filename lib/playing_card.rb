@@ -1,10 +1,10 @@
 class PlayingCard
-  RANKS = %w(A 2 3 4 5 6 7 8 9 10 J Q K)
-  attr_reader :rank, :suit
+  attr_reader :rank, :suit, :value
 
   def initialize(rank, suit)
     @rank = rank
     @suit = suit
+    @value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"].index(@rank)
   end
 
   def rank
