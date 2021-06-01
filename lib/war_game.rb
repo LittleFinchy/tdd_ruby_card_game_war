@@ -1,9 +1,9 @@
 class WarGame
   attr_accessor :player1, :player2
 
-  def initialize
-    start
-  end
+  # def initialize
+  #   start
+  # end
 
   def start
     deck = CardDeck.new()
@@ -16,6 +16,13 @@ class WarGame
   end
 
   def winner
+    if @player1.cards_left == 0
+      @player2.name
+    elsif @player2.cards_left == 0
+      @player1.name
+    else
+      nil
+    end
   end
 
   # def play_round
