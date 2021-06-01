@@ -1,15 +1,30 @@
-require_relative '../lib/card_deck'
+require_relative "../lib/card_deck"
+require_relative "../lib/playing_card"
 
-describe 'CardDeck' do
-  it 'Should have 52 cards when created' do
-    deck = CardDeck.new
-    expect(deck.cardsLeft).to eq 52
+describe "CardDeck" do
+  let(:deck) { CardDeck.new() }
+
+  it "should have 52 cards when created" do
+    expect(deck.cards_left).to eq 52
   end
 
-  it 'should deal the top card' do
-    deck = CardDeck.new
+  it "should shuffle the deck" do
+    expect(deck.shuffle)
     card = deck.deal
-    expect(card).to_not be_nil
-    expect(deck.cardsLeft).to eq 51
+    card2 = deck.deal
+    card3 = deck.deal
+    card4 = deck.deal
+    expect([card.rank, card2.rank, card3.rank, card4.rank].uniq.length > 1).to eq true
+    expect(deck.cards_left).to eq 48
+  end
+
+  it "should deal 5 cards" do
+    card = deck.deal
+    card2 = deck.deal
+    card3 = deck.deal
+    card4 = deck.deal
+    card5 = deck.deal
+    expect([card.rank, card2.rank, card3.rank, card4.rank, card5.rank].uniq.length > 1).to eq true
+    expect(deck.cards_left).to eq 47
   end
 end
