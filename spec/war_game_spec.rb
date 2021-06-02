@@ -21,9 +21,11 @@ describe "WarGame" do
     game.player1.take_cards([PlayingCard.new("3", "H"), PlayingCard.new("7", "C")])
     game.player2.take_cards([PlayingCard.new("5", "D"), PlayingCard.new("J", "D")])
     game.play_round
-    expect(game.player2.cards_left - game.player1.cards_left).to eq 2
+    expect(game.player1.cards_left).to eq 1
+    expect(game.player2.cards_left).to eq 3
     game.play_round
-    expect(game.player2.cards_left - game.player1.cards_left).to eq 4
+    expect(game.player1.cards_left).to eq 0
+    expect(game.player2.cards_left).to eq 4
   end
 
   it "shows that ace beats everything" do
@@ -43,7 +45,7 @@ describe "WarGame" do
   end
 
   it "player 2 will lose if they run out of cards in a tie" do
-    game.player1.take_cards([PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("3", "H"), PlayingCard.new("7", "H"), PlayingCard.new("7", "H")])
+    game.player1.take_cards([PlayingCard.new("7", "H"), PlayingCard.new("8", "H"), PlayingCard.new("3", "H"), PlayingCard.new("9", "H"), PlayingCard.new("5", "H")])
     game.player2.take_cards([PlayingCard.new("5", "H")])
     game.play_round
     expect(game.winner.name).to eq game.player1.name

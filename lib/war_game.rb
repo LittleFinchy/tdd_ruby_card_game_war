@@ -19,9 +19,9 @@ class WarGame
   end
 
   def winner
-    if @player1.cards_left == 0
+    if @player1.cards_left < 1
       @player2
-    elsif @player2.cards_left == 0
+    elsif @player2.cards_left < 1
       @player1
     else
       nil
@@ -32,12 +32,12 @@ class WarGame
     card1 = @player1.play_card
     card2 = @player2.play_card
     if card1.value != card2.value # there is no tie
-      if card1.value > card2.value
+      if card1.value > card2.value # winner is player 1
         @player1.take_cards([card1, card2])
         @player1.take_cards(@temp_cards)
         @temp_cards = []
         "player1 won"
-      else
+      else # winner is player 2
         @player2.take_cards([card1, card2])
         @player1.take_cards(@temp_cards)
         @temp_cards = []
@@ -46,16 +46,15 @@ class WarGame
     else # there is a tie
       @temp_cards.concat([card1, card2])
 
-      3.times do
-        if @player1.cards_left > 1
-          @temp_cards.push(@player1.play_card)
-        end
-        if @player2.cards_left > 1
-          @temp_cards.push(@player2.play_card)
-        end
+      3.times do # draw 3 cards for tie
+        @temp_cards.push(@player1.play_card)
+        @temp_cards.push(@player2.play_card)
       end
 
-      play_round
+      if @player1.cards_left > 1 && @player2.cards_left > 1
+        play_round
+      end
+
       "tie"
     end
   end
