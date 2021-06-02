@@ -1,13 +1,15 @@
 require_relative "../lib/war_socket_server"
 
-clients = []
 server = WarSocketServer.new()
 server.start
-until server.create_game_if_possible
-  clients.push(server.accept_new_client)
+while true
+  server.accept_new_client
+  server.create_game_if_possible
 end
-puts "game started"
 
-clients[0].puts "start"
-# game = server.games[0]
-# game.start
+game = server.games[0]
+game.start
+until game.winner
+  puts game.play_round
+end
+puts "Winner: #{game.winner.name}"

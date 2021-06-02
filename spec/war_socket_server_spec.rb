@@ -15,7 +15,7 @@ class MockWarSocketClient
 
   def capture_output(delay = 0.1)
     sleep(delay)
-    @output = @socket.read_nonblock(1000) # not gets which blocks
+    @output = @socket.read_nonblock(1000).chomp # not gets which blocks
   rescue IO::WaitReadable
     @output = ""
   end
@@ -55,6 +55,51 @@ describe WarSocketServer do
     @server.create_game_if_possible
     expect(@server.games.count).to be 1
   end
+
+  it "both clients get starting message" do
+    @server.start
+    client1 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client1)
+    @server.accept_new_client("Player 1")
+    client2 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client2)
+    @server.accept_new_client("Player 2")
+    @server.create_game_if_possible
+    expect(client1.capture_output).to eq "Started"
+    expect(client2.capture_output).to eq "Started"
+  end
+
+  it "both clients can send their own messages" do
+    @server.start
+    client1 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client1)
+    @server.accept_new_client("Player 1")
+    client2 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client2)
+    @server.accept_new_client("Player 2")
+    @server.create_game_if_possible
+    client1.provide_input("1")
+    client2.provide_input("2")
+    @server.read_input
+    # puts @server.message
+    expect(@server.message).to eq "1"
+    @server.read_input
+    expect(@server.message).to eq "2"
+  end
+
+  # it "both clients can send their own messages" do
+  #   @server.start
+  #   client1 = MockWarSocketClient.new(@server.port_number)
+  #   @clients.push(client1)
+  #   @server.accept_new_client("Player 1")
+  #   client2 = MockWarSocketClient.new(@server.port_number)
+  #   @clients.push(client2)
+  #   @server.accept_new_client("Player 2")
+  #   @server.create_game_if_possible
+  #   client1.provide_input("y")
+  #   # client2.provide_input("y")
+  #   expect(@client1.capture_output).to eq "waiting for player2"
+  # end
 
   # Add more tests to make sure the game is being played
   # For example:
