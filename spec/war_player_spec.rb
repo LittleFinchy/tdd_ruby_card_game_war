@@ -14,8 +14,7 @@ describe "WarPlayer" do
     player1.take_cards([card, card2])
     player1.play_card
     player1.play_card
-    expect(player1.play_card).to eq card2
-    expect(player1.play_card).to eq card
+    expect([player1.play_card, player1.play_card]).to match_array([card, card2])
   end
 
   it "returns the number of cards left in a players hand" do

@@ -51,3 +51,6 @@ describe "WarGame" do
     expect(game.winner.name).to eq game.player1.name
   end
 end
+
+# fix: 2 tests fail atm. it started when i added a shuffle to the cards won array in war_player
+# i added that shuffle to try and fix the inf loop

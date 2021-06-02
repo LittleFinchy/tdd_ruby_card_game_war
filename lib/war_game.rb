@@ -7,7 +7,7 @@ class WarGame
   def initialize
     @player1 = Player.new(["Stephen", "Bob"].sample, [])
     @player2 = Player.new("Joe", [])
-    @temp_cards = []
+    @cards_on_table = []
   end
 
   def start
@@ -33,22 +33,20 @@ class WarGame
     card2 = @player2.play_card
     if card1.value != card2.value # there is no tie
       if card1.value > card2.value # winner is player 1
-        @player1.take_cards([card1, card2])
-        @player1.take_cards(@temp_cards)
-        @temp_cards = []
+        @player1.take_cards([card1, card2, @cards_on_table].flatten!.shuffle!)
+        @cards_on_table = []
         "player1 won"
       else # winner is player 2
-        @player2.take_cards([card1, card2])
-        @player1.take_cards(@temp_cards)
-        @temp_cards = []
+        @player2.take_cards([card1, card2, @cards_on_table].flatten!.shuffle!)
+        @cards_on_table = []
         "player2 won"
       end
     else # there is a tie
-      @temp_cards.concat([card1, card2])
+      @cards_on_table.concat([card1, card2])
 
       3.times do # draw 3 cards for tie
-        @temp_cards.push(@player1.play_card)
-        @temp_cards.push(@player2.play_card)
+        @cards_on_table.push(@player1.play_card)
+        @cards_on_table.push(@player2.play_card)
       end
 
       if @player1.cards_left > 1 && @player2.cards_left > 1
