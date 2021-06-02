@@ -1,6 +1,6 @@
-require_relative "war_game"
+require_relative "../lib/war_game"
 
-game = WarGame.new
+game = WarGame.new()
 game.start
 until game.winner
   puts game.play_round

@@ -14,7 +14,7 @@ describe "WarGame" do
     26.times do
       game.player2.play_card
     end
-    expect(game.winner).to eq game.player1.name
+    expect(game.winner.name).to eq game.player1.name
   end
 
   it "plays two rounds" do
@@ -32,7 +32,7 @@ describe "WarGame" do
     12.times do
       game.play_round
     end
-    expect(game.winner).to eq game.player1.name
+    expect(game.winner.name).to eq game.player1.name
   end
 
   it "a tie will play again" do
@@ -42,10 +42,10 @@ describe "WarGame" do
     expect(game.winner).to eq nil
   end
 
-  it "a tie will play again" do
+  it "player 2 will lose if they run out of cards in a tie" do
     game.player1.take_cards([PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("3", "H"), PlayingCard.new("7", "H"), PlayingCard.new("7", "H")])
     game.player2.take_cards([PlayingCard.new("5", "H")])
     game.play_round
-    expect(game.winner).to eq nil
+    expect(game.winner.name).to eq game.player1.name
   end
 end

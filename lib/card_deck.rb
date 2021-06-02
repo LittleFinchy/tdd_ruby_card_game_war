@@ -1,4 +1,4 @@
-require "playing_card"
+require_relative "playing_card"
 
 class CardDeck
   def build_deck
