@@ -17,11 +17,35 @@ describe "WarGame" do
     expect(game.winner).to eq game.player1.name
   end
 
-  it "plays a round" do
-    game.start
+  it "plays two rounds" do
+    game.player1.take_cards([PlayingCard.new("3", "H"), PlayingCard.new("7", "C")])
+    game.player2.take_cards([PlayingCard.new("5", "D"), PlayingCard.new("J", "D")])
     game.play_round
-    expect((game.player1.cards_left - game.player2.cards_left).abs).to eq 2
+    expect(game.player2.cards_left - game.player1.cards_left).to eq 2
     game.play_round
-    expect((game.player1.cards_left - game.player2.cards_left).abs).to eq 4 || 0
+    expect(game.player2.cards_left - game.player1.cards_left).to eq 4
+  end
+
+  it "shows that ace beats everything" do
+    game.player1.take_cards([PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H"), PlayingCard.new("A", "H")])
+    game.player2.take_cards([PlayingCard.new("K", "H"), PlayingCard.new("Q", "H"), PlayingCard.new("J", "H"), PlayingCard.new("10", "H"), PlayingCard.new("9", "H"), PlayingCard.new("8", "H"), PlayingCard.new("7", "H"), PlayingCard.new("6", "H"), PlayingCard.new("5", "H"), PlayingCard.new("4", "H"), PlayingCard.new("3", "H"), PlayingCard.new("2", "H")])
+    12.times do
+      game.play_round
+    end
+    expect(game.winner).to eq game.player1.name
+  end
+
+  it "a tie will play again" do
+    game.player1.take_cards([PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("3", "H"), PlayingCard.new("7", "H"), PlayingCard.new("7", "H")])
+    game.player2.take_cards([PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("5", "H")])
+    game.play_round
+    expect(game.winner).to eq nil
+  end
+
+  it "a tie will play again" do
+    game.player1.take_cards([PlayingCard.new("5", "H"), PlayingCard.new("5", "H"), PlayingCard.new("3", "H"), PlayingCard.new("7", "H"), PlayingCard.new("7", "H")])
+    game.player2.take_cards([PlayingCard.new("5", "H")])
+    game.play_round
+    expect(game.winner).to eq nil
   end
 end

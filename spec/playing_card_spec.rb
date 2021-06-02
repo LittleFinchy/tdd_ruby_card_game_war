@@ -10,8 +10,8 @@ describe "PlayingCard" do
 
   it "shows the value of a card" do
     card = PlayingCard.new("7", "H")
-    expect(card.value).to eq 6
+    expect(card.value).to eq 5
     card2 = PlayingCard.new("J", "H")
-    expect(card2.value).to eq 10
+    expect(card2.value).to eq 9
   end
 end
