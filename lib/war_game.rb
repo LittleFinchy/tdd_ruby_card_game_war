@@ -29,6 +29,7 @@ class WarGame
   end
 
   def play_round
-    war_game_round(@player1, @player2)
+    round = WarRound.new(@player1, @player2)
+    round.war_game_round
   end
 end

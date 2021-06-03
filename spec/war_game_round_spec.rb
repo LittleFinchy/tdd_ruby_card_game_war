@@ -5,7 +5,8 @@ describe "WarGame" do
   let(:player2) { Player.new("Bob", [PlayingCard.new("5", "H")]) }
 
   it "play a round of war" do
-    output = war_game_round(player1, player2)
+    round = WarRound.new(player1, player2)
+    output = round.war_game_round
     expect(output).to eq output
   end
 end
