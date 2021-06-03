@@ -6,9 +6,8 @@ describe "WarClient" do
     @clients = []
     @server = WarSocketServer.new
     @server.start
-    # client1 = MockWarSocketClient.new(@server.port_number)
-    # @clients.push(client1)
-    # @server.accept_new_client("Player 1")
+    @client1 = WarClient.new(@server.port_number)
+    @clients.push(client1)
   end
 
   after(:each) do
@@ -19,7 +18,9 @@ describe "WarClient" do
   end
 
   it "provide_input works" do
-    expect(0).to eq 0
+    @client1.provide_input("this is a test")
+    feedback = @server.read_message(@server.games.keys[0], 0)
+    expect(feedback).to eq "this is a test"
   end
 
   it "capture_output works" do
@@ -29,3 +30,11 @@ end
 
 #
 #
+# @server.accept_new_client("Player 1")
+# @server.create_game_if_possible
+# expect(@server.games.count).to be 0
+# client2 = MockWarSocketClient.new(@server.port_number)
+# @clients.push(client2)
+# @server.accept_new_client("Player 2")
+# @server.create_game_if_possible
+# expect(@server.games.count).to eq 1
