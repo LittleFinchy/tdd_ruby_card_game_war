@@ -18,7 +18,7 @@ describe "WarGame" do
   end
 
   it "plays two rounds" do
-    game.player1.take_cards([PlayingCard.new("3", "H"), PlayingCard.new("7", "C")])
+    game.player1.take_cards([PlayingCard.new("2", "H"), PlayingCard.new("4", "C")])
     game.player2.take_cards([PlayingCard.new("5", "D"), PlayingCard.new("J", "D")])
     game.play_round
     expect(game.player1.cards_left).to eq 1
