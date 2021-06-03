@@ -35,11 +35,11 @@ class WarGame
       if card1.value > card2.value # winner is player 1
         @player1.take_cards([card1, card2, @cards_on_table].flatten!.shuffle!)
         @cards_on_table = []
-        "player1 won"
+        "#{@player1.name} won a #{card2.rank} of #{card2.suit} with a #{card1.rank} of #{card1.suit}"
       else # winner is player 2
         @player2.take_cards([card1, card2, @cards_on_table].flatten!.shuffle!)
         @cards_on_table = []
-        "player2 won"
+        "#{@player2.name} won a #{card1.rank} of #{card1.suit} with a #{card2.rank} of #{card2.suit}"
       end
     else # there is a tie
       @cards_on_table.concat([card1, card2])

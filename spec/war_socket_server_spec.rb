@@ -56,7 +56,19 @@ describe WarSocketServer do
     expect(@server.games.count).to be 1
   end
 
-  it "both clients get starting message" do
+  it "both clients get welcome message" do
+    @server.start
+    client1 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client1)
+    @server.accept_new_client("Player 1")
+    expect(client1.capture_output).to eq "Wait for another player"
+    client2 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client2)
+    @server.accept_new_client("Player 2")
+    expect(client2.capture_output).to eq "Ready to start"
+  end
+
+  it "both players get starting message" do
     @server.start
     client1 = MockWarSocketClient.new(@server.port_number)
     @clients.push(client1)
@@ -65,11 +77,24 @@ describe WarSocketServer do
     @clients.push(client2)
     @server.accept_new_client("Player 2")
     @server.create_game_if_possible
-    expect(client1.capture_output).to eq "Started"
-    expect(client2.capture_output).to eq "Started"
+    expect(client1.capture_output.include?("Game is starting now")).to eq true
+    expect(client2.capture_output.include?("Game is starting now")).to eq true
   end
 
-  it "both clients can send their own messages" do
+  it "round ready makes sure both players are ready to play a round" do
+    @server.start
+    client1 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client1)
+    @server.accept_new_client("Player 1")
+    client2 = MockWarSocketClient.new(@server.port_number)
+    @clients.push(client2)
+    @server.accept_new_client("Player 2")
+    client1.provide_input("y")
+    client2.provide_input("y")
+    expect(@server.round_ready?).to eq true
+  end
+
+  it "play round will play one round" do
     @server.start
     client1 = MockWarSocketClient.new(@server.port_number)
     @clients.push(client1)
@@ -78,32 +103,14 @@ describe WarSocketServer do
     @clients.push(client2)
     @server.accept_new_client("Player 2")
     @server.create_game_if_possible
-    client1.provide_input("1")
-    client2.provide_input("2")
-    @server.read_input
-    # puts @server.message
-    expect(@server.message).to eq "1"
-    @server.read_input
-    expect(@server.message).to eq "2"
+    game = @server.games[0]
+    game.start
+    client1.provide_input("y")
+    client2.provide_input("y")
+    @server.play_round
+    client1_message = client1.capture_output
+    client2_message = client2.capture_output
+    expect(client1_message.include?("won")).to eq true
+    expect(client2_message.include?("won")).to eq true
   end
-
-  # it "both clients can send their own messages" do
-  #   @server.start
-  #   client1 = MockWarSocketClient.new(@server.port_number)
-  #   @clients.push(client1)
-  #   @server.accept_new_client("Player 1")
-  #   client2 = MockWarSocketClient.new(@server.port_number)
-  #   @clients.push(client2)
-  #   @server.accept_new_client("Player 2")
-  #   @server.create_game_if_possible
-  #   client1.provide_input("y")
-  #   # client2.provide_input("y")
-  #   expect(@client1.capture_output).to eq "waiting for player2"
-  # end
-
-  # Add more tests to make sure the game is being played
-  # For example:
-  #   make sure the mock client gets appropriate output
-  #   make sure the next round isn't played until both clients say they are ready to play
-  #   ...
 end
