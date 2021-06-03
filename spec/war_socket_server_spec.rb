@@ -92,15 +92,16 @@ describe WarSocketServer do
   it "round ready makes sure both players are ready to play a round" do
     @client1.provide_input("y")
     @client2.provide_input("y")
-    expect(@server.round_ready?).to eq true
+    @server.create_game_if_possible
+    expect(@server.round_ready?(@server.games.keys[0])).to eq true
   end
 
   it "play round will play one round" do
     @server.create_game_if_possible
-    @server.games[0].start
+    @server.games.keys[0].start
     @client1.provide_input("y")
     @client2.provide_input("y")
-    @server.play_round(@server.games[0])
+    @server.play_round(@server.games.keys[0])
     client1_message = @client1.capture_output
     client2_message = @client2.capture_output
     expect(client1_message).to_not eq nil
