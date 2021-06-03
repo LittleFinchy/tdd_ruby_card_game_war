@@ -47,18 +47,27 @@ class WarSocketServer
     ""
   end
 
-  def round_ready?
-    @clients[0].puts "Play card? (y/n)"
-    @clients[1].puts "Play card? (y/n)"
-    client1_message = ""
-    client2_message = ""
+  def see_if_ready(client1_message, client2_message)
     while client1_message != "y" # first player needs to say 'y'
       client1_message = read_message(0)
     end
     while client2_message != "y"
       client2_message = read_message(1) # second player needs to say 'y'
     end
+  end
+
+  def round_ready?
+    message_players_by_game("Play card? (y/n)")
+    client1_message = ""
+    client2_message = ""
+    see_if_ready(client1_message, client2_message)
     true
+  end
+
+  def message_players_by_game(game = nil, message)
+    @clients.each do |client|
+      client.puts message
+    end
   end
 
   def play_round(game)
@@ -69,10 +78,12 @@ class WarSocketServer
     end
   end
 
-  def message_players_by_game(game = nil, message)
-    @clients.each do |client|
-      client.puts message
+  def play_full_game(game)
+    game.start
+    until game.winner
+      play_round(game)
     end
+    puts "Winner: #{game.winner.name}"
   end
 
   def stop
