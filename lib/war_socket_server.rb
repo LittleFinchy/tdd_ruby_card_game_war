@@ -61,9 +61,9 @@ class WarSocketServer
     true
   end
 
-  def play_round
+  def play_round(game)
     if round_ready?
-      output = @games[0].play_round
+      output = game.play_round
       message_players_by_game(output)
       #add way to show num of cards left
     end

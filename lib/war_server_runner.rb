@@ -6,9 +6,11 @@ until server.create_game_if_possible
   server.accept_new_client
 end
 puts "Both players joined"
-server.games[0].start
 
-until server.games[0].winner
-  server.play_round
+game = server.games[0]
+game.start
+
+until game.winner
+  server.play_round(game)
 end
-puts "Winner: #{server.games[0].winner.name}"
+puts "Winner: #{game.winner.name}"

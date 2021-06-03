@@ -107,7 +107,7 @@ describe WarSocketServer do
     game.start
     client1.provide_input("y")
     client2.provide_input("y")
-    @server.play_round
+    @server.play_round(game)
     client1_message = client1.capture_output
     client2_message = client2.capture_output
     expect(client1_message).to_not eq nil

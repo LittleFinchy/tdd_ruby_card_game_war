@@ -11,7 +11,6 @@ class Player
   end
 
   def take_cards(cards_won)
-    # cards_won.shuffle!
     @hand = cards_won.concat(@hand)
   end
 
