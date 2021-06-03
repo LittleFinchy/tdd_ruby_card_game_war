@@ -17,13 +17,17 @@ class WarSocketServer
     @server = TCPServer.new(port_number)
   end
 
-  def accept_new_client(player_name = "Random Player")
-    client = @server.accept_nonblock # returns a TCPSocket
+  def welcome_players(client)
     if @clients.length == 0
       client.puts "Wait for another player"
     else
       client.puts "Ready to start"
     end
+  end
+
+  def accept_new_client(player_name = "Random Player")
+    client = @server.accept_nonblock # returns a TCPSocket
+    welcome_players(client)
     @clients.push(client)
   rescue IO::WaitReadable, Errno::EINTR
     puts "No client to accept"
@@ -31,9 +35,7 @@ class WarSocketServer
 
   def create_game_if_possible
     if @clients.length == 2
-      @clients.each do |client|
-        client.puts "Game is starting now"
-      end
+      message_players_by_game("Game is starting now")
       @games.push(WarGame.new())
     end
   end
@@ -46,13 +48,15 @@ class WarSocketServer
   end
 
   def round_ready?
+    @clients[0].puts "Play card? (y/n)"
+    @clients[1].puts "Play card? (y/n)"
     client1_message = ""
     client2_message = ""
-    while client1_message != "y"
-      client1_message = read_message(0) # first player
+    while client1_message != "y" # first player needs to say 'y'
+      client1_message = read_message(0)
     end
     while client2_message != "y"
-      client2_message = read_message(1) # second player
+      client2_message = read_message(1) # second player needs to say 'y'
     end
     true
   end
@@ -60,10 +64,14 @@ class WarSocketServer
   def play_round
     if round_ready?
       output = @games[0].play_round
-      @clients.each do |client|
-        client.puts output
-      end
+      message_players_by_game(output)
       #add way to show num of cards left
+    end
+  end
+
+  def message_players_by_game(game = nil, message)
+    @clients.each do |client|
+      client.puts message
     end
   end
 

@@ -53,7 +53,7 @@ class WarGame
         play_round
       end
 
-      "tie"
+      "#{@player1.name} and #{@player2.name} tie"
     end
   end
 end

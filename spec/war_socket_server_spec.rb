@@ -110,7 +110,7 @@ describe WarSocketServer do
     @server.play_round
     client1_message = client1.capture_output
     client2_message = client2.capture_output
-    expect(client1_message.include?("won")).to eq true
-    expect(client2_message.include?("won")).to eq true
+    expect(client1_message).to_not eq nil
+    expect(client2_message).to_not eq nil
   end
 end

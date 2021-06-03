@@ -5,7 +5,7 @@ server.start
 until server.create_game_if_possible
   server.accept_new_client
 end
-
+puts "Both players joined"
 server.games[0].start
 
 until server.games[0].winner
