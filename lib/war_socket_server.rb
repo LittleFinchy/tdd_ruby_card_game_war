@@ -36,7 +36,6 @@ class WarSocketServer
   def create_game_if_possible
     if @clients_looking.length == 2
       game = WarGame.new()
-      puts "starting..."
       @games[game] = @clients_looking.shift(2)
       message_players_by_game(game, "Game is starting now")
       game

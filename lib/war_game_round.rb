@@ -12,18 +12,18 @@ class WarRound
     compare(card1, card2)
   end
 
-  def build_message(player, cards, output = "")
-    output += "Tie Round! " if cards.length > 2
+  def build_message(player, output = "")
+    output += "Tie Round! " if @cards_in_play.length > 2
     output += "#{player.name} won these cards: "
-    cards.each do |card|
+    @cards_in_play.each do |card|
       output += "#{card.rank} of #{card.suit}, "
     end
     output
   end
 
-  def handle_winner(winning_player, cards)
-    winning_player.take_cards([cards].flatten!.shuffle!)
-    message = build_message(winning_player, cards)
+  def handle_winner(winning_player)
+    winning_player.take_cards([@cards_in_play].flatten!.shuffle!)
+    message = build_message(winning_player)
     @cards_in_play = []
     message
   end
@@ -39,9 +39,9 @@ class WarRound
 
   def handle_no_tie(card1, card2)
     if card1.value > card2.value # winner is player 1
-      handle_winner(@player1, @cards_in_play)
+      handle_winner(@player1)
     else # winner is player 2
-      handle_winner(@player2, @cards_in_play)
+      handle_winner(@player2)
     end
   end
 
