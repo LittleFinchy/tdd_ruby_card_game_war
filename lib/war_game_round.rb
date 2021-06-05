@@ -25,7 +25,7 @@ class WarGameRound
   def handle_winner(winning_player, cards_in_play)
     winning_player.take_cards([cards_in_play].flatten!.shuffle!)
     message = build_message(winning_player, cards_in_play)
-    cards_in_play = []
+    cards_in_play = [] # test without this line
     message
   end
 

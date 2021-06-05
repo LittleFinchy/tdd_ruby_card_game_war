@@ -1,11 +1,11 @@
 require "socket"
 
 class WarClient
-  attr_reader :socket
-  attr_reader :output
+  attr_reader :socket, :output, :name
 
-  def initialize(port)
-    @socket = TCPSocket.new("localhost", port)
+  def initialize(address = "localhost", port, name)
+    @socket = TCPSocket.new(address, port)
+    @name = name
   end
 
   def provide_input(text)
@@ -23,3 +23,15 @@ class WarClient
     @socket.close if @socket
   end
 end
+
+# class TCPSocket
+#   attr_accessor :address, :port, :name
+#   attr_writer :name
+#   attr_reader :name
+
+#   def initialize(address, port)
+#     @address = address
+#     @port = port
+#     @name = name
+#   end
+# end

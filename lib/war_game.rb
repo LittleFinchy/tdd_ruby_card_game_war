@@ -5,11 +5,11 @@ require_relative "war_game_round"
 class WarGame
   attr_reader :player1, :player2
 
-  def initialize #(player1, player2)
-    # @player1 = player1
-    # @player2 = player2
-    @player1 = Player.new(["Stephen", "Bob"].sample, [])
-    @player2 = Player.new("Joe", [])
+  def initialize(player1, player2)
+    @player1 = player1
+    @player2 = player2
+    # @player1 = Player.new(["Stephen", "Bob"].sample, [])
+    # @player2 = Player.new("Joe", [])
   end
 
   def start

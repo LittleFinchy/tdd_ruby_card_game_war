@@ -3,7 +3,7 @@ require_relative "../lib/war_socket_server"
 
 class MockWarSocketClient
   attr_reader :socket
-  attr_reader :output
+  attr_reader :output, :name
 
   def initialize(port)
     @socket = TCPSocket.new("localhost", port)
@@ -32,7 +32,8 @@ describe WarSocketServer do
     @server.start
     client1 = MockWarSocketClient.new(@server.port_number)
     @clients.push(client1)
-    @server.accept_new_client("Player 1")
+    @server.accept_new_client
+    client1.provide_input("Player 1")
   end
 
   after(:each) do
@@ -52,7 +53,8 @@ describe WarSocketServer do
     expect(@server.games.count).to be 0
     client2 = MockWarSocketClient.new(@server.port_number)
     @clients.push(client2)
-    @server.accept_new_client("Player 2")
+    @server.accept_new_client
+    client2.provide_input("Player 1")
     @server.create_game_if_possible
     expect(@server.games.count).to eq 1
   end
@@ -65,10 +67,10 @@ describe WarSocketServer do
     @server.start
     @client1 = MockWarSocketClient.new(@server.port_number)
     @clients.push(@client1)
-    @server.accept_new_client("Player 1")
+    @server.accept_new_client
     @client2 = MockWarSocketClient.new(@server.port_number)
     @clients.push(@client2)
-    @server.accept_new_client("Player 2")
+    @server.accept_new_client
   end
 
   after(:each) do

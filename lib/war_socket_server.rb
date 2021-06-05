@@ -1,5 +1,6 @@
 require "socket"
 require_relative "war_game"
+# require_relative "war_player"
 
 class WarSocketServer
   attr_accessor :games, :clients_looking
@@ -25,10 +26,17 @@ class WarSocketServer
     end
   end
 
-  def accept_new_client(player_name = "Random Player")
+  def client_to_person(client)
+    client.puts "Enter your name: "
+    name = client.read_nonblock(1000).chomp
+    person = Person.new(client, name)
+  end
+
+  def accept_new_client
     client = @server.accept_nonblock # returns a TCPSocket
+    client_to_person(client)
     welcome_players(client)
-    clients_looking.push(client)
+    clients_looking.push(client) #push the person
   rescue IO::WaitReadable, Errno::EINTR
     puts "No client to accept"
     sleep(2)
@@ -36,7 +44,7 @@ class WarSocketServer
 
   def create_game_if_possible
     if clients_looking.length == 2
-      game = WarGame.new #(clients_looking[0], clients_looking[1]) #this is where i need to create a player.new()
+      game = WarGame.new(client_to_person(clients_looking[0].person), client_to_person(clients_looking[1].person))
       games[game] = clients_looking.shift(2)
       message_players_by_game(game, "Game is starting now")
       game
@@ -76,7 +84,7 @@ class WarSocketServer
   end
 
   def play_round(game)
-    if round_ready?(game)
+    if round_ready?(game) # test without the if
       output = game.play_round
       message_players_by_game(game, output)
     end

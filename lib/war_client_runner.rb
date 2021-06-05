@@ -1,6 +1,13 @@
 require_relative "war_client"
 
-client = WarClient.new(3335)
+puts "Enter the address"
+address = gets.chomp
+puts "Enter the port number"
+port = gets.chomp
+puts "Enter your name"
+name = gets.chomp
+
+client = WarClient.new(address, port, name)
 while true
   output = ""
   until output != ""

@@ -1,7 +1,9 @@
 require_relative "../lib/war_game"
 
 describe "WarGame" do
-  let(:game) { WarGame.new() }
+  let(:player1) { WarPlayer.new("Bill") }
+  let(:player2) { WarPlayer.new("Bob") }
+  let(:game) { WarGame.new(player1, player2) }
 
   it "players should have the same number of cards at the start" do
     game.start
